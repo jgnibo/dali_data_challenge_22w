@@ -8,10 +8,6 @@
 The following visualizations were created with Tableau using data from WIID from 2000-2017. The visualizations intend to 
 paint a picture of world income inequality in the 21st century.
 
-what measuring
-design
-filters
-explanation of topics?
 
 ### Visualization 1: Global Gini Coefficients
 
@@ -105,4 +101,76 @@ for each bar and there are no distinguishing populations in an individual bar (a
 
 
 ## Data Challenge Part 2
+
+
+### Summary
+
+For Part 2 of the challenge, I decided to make a model to predict whether someone will default on a loan.
+
+Here is the link to the dataset I used: https://www.kaggle.com/rupakroy/credit-data
+
+And a link to my model: https://www.kaggle.com/jgnibo/credit-data-model
+
+
+### Model Selection and Metrics
+
+I analyzed the dataset to help inform what model I should use. The dataset has three independent variables: `income`, `age`,
+and `loan`. Income represents the income of a particular client, age represents that client's age, and loan represents the
+loan amount that client is requesting.
+
+These three variables are indicators of whether a particular client will default on their loan. I chose to use logistic 
+regression because my target output boils down to a binary classification problem (whether someone will default or not). Either
+they will default on their loan, or they will not default on their loan. I found that I could implement such a model with ease
+using logistic regression, as whether someone will default on their loan is based on the three independent variables discussed
+earlier.
+
+
+### Assumptions
+
+I'd also like to address the basic assumptions of my model. The first is that there is limited correlation between the independent variables
+used as predictive measures for loan default status. I verified this assumption by looked at the standard correlation (Pearson) 
+between the independent variables. From this, I found there was very little correlation between income, age, and loan amount, 
+and thus decided to proceed with logistic regression.
+
+I also assume that this sample size (initially 2000 entries, trimmed to 1972) is large enough to have predictive accuracy. Finally,
+I assumed that the data entries are independent of each other.
+
+
+### Basic Cleaning
+
+Aside from selecting what algorithm to use, there was a tiny bit of work to be done on the data itself. I found that there
+were a few entries without age information, and thus trimmed those from the dataset. The dataset also included an additional
+column `clientid` that simply assigns each client a unique identifying number. I deleted that column from the dataset as well
+so I would only be working with the independent variables that are predictive of default status.
+
+
+### Outliers
+
+With the dataset roughly cleaned, it was then time to look for outliers. The first outlier I encountered were three age values
+less than 0. It is impossible to have negative age, so I removed these values from the dataset. I also checked the legal age
+to get a loan, which turned out to be 18. The remaining age values were all greater than 18, with a mean of 40.93 and a max
+of 63.97. I am no expert on loans but figured that these numbers sounded reasonable, as middle-aged people are probably taking
+out the most loans and there are probably not that many people taking out loans as they get closer to retirement. Thus, I felt
+comfortable with the outliers I had removed from the age data.
+
+I then looked at the descriptive data for income. As mentioned before, I am no financial expert, but saw that the max income
+of a client was $69,995.67. This seemed reasonable, as I figured people with higher incomes probably do not require as many loans.
+Considering the max income is close to the average household income in the United States, I did not find any glaring upper 
+outliers in the income data. The minimum income was $20,014.49, which roughly translates to the yearly salary of someone working
+the minimum wage. Thus, I felt sufficient with the lower bound of the income data, as I figured banks would likely only give out
+loans in the first place to employed individuals.
+
+Finally, I looked at the loan data and found that there were 22 loans taken out under $100. Although none of these clients defaulted,
+with a mean loan of $4443.24, I decided to remove loans under $100 from the dataset.
+
+
+### Performance
+
+The model has a predictive accuracy ranging from 90.6% to 94.7% over several tests (variability attributed to randomly selected 
+subsets for training and testing). I used scikit-learn to help implement the logistic regression model and the splitting, 
+training, and testing of the model. 
+
+
+
+
 
